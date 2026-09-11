@@ -1,6 +1,7 @@
 // components/SearchBox.tsx
 import { useState } from "react";
 import { View, TextInput, Button } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface SearchBoxProps {
   onCari: (kota: string) => void;
@@ -16,15 +17,17 @@ export default function SearchBox({ onCari }: SearchBoxProps) {
   };
 
   return (
-    <View style={{ flexDirection: "row", gap: 8 }}>
-      <TextInput
-        placeholder="Nama kota"
-        value={teks}
-        onChangeText={setTeks}
-        onSubmitEditing={handleCari}
-        style={{ flex: 1, borderWidth: 1, padding: 8 }}
-      />
-      <Button title="Cari" onPress={handleCari} />
-    </View>
+    <SafeAreaView edges={['top']} style={{ paddingHorizontal: 16 }}>
+      <View style={{ flexDirection: "row", gap: 8 }}>
+        <TextInput
+          placeholder="Nama kota"
+          value={teks}
+          onChangeText={setTeks}
+          onSubmitEditing={handleCari}
+          style={{ flex: 1, borderWidth: 1, padding: 8, borderRadius: 6 }}
+        />
+        <Button title="Cari" onPress={handleCari} />
+      </View>
+    </SafeAreaView>
   );
 }
