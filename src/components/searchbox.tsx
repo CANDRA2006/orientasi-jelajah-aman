@@ -17,7 +17,9 @@ export default function SearchBox({ onCari }: SearchBoxProps) {
   };
 
   return (
-    <SafeAreaView edges={['top']} style={{ paddingHorizontal: 16 }}>
+    // Modifikasi menggunakan SafeAreaView untuk memberikan inset/padding atas otomatis
+    // sehingga komponen tidak tertutup oleh status bar atau notch HP.
+    <SafeAreaView edges={["top"]} style={{ paddingHorizontal: 16 }}>
       <View style={{ flexDirection: "row", gap: 8 }}>
         <TextInput
           placeholder="Nama kota"
