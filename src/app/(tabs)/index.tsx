@@ -16,7 +16,7 @@ export default function HalamanUtama() {
   const [sedangMemuat, setSedangMemuat] = useState(false);
   const [pesanError, setPesanError] = useState<string | null>(null);
 
-  const teksTertunda = useDebounce(teksCari, 500);
+  const teksTertunda = useDebounce(teksCari, 800);
 
   useEffect(() => {
     if (teksTertunda.trim().length === 0) {
@@ -58,7 +58,9 @@ export default function HalamanUtama() {
 
       {pesanError && (
         <View>
-          <Text>{pesanError}</Text>
+          <Text accessibilityLabel={`Pesan error: ${pesanError}`}>
+            {pesanError}
+          </Text>
 
           <Button
             title="Coba Lagi"
@@ -70,7 +72,13 @@ export default function HalamanUtama() {
       {!sedangMemuat &&
         !pesanError &&
         teksTertunda.length > 0 &&
-        hasil.length === 0 && <Text>Kota tidak ditemukan</Text>}
+        hasil.length === 0 && (
+          <Text accessibilityLabel="Pesan hasil kosong: Kota tidak ditemukan">
+            Kota tidak ditemukan
+          </Text>
+        )}
+
+      {hasil.length > 0 && <Text>Ditemukan {hasil.length} kota</Text>}
 
       {hasil.map((kota) => (
         <WeatherCard
@@ -83,4 +91,3 @@ export default function HalamanUtama() {
     </SafeAreaView>
   );
 }
-
