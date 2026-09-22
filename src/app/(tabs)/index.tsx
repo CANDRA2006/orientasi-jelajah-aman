@@ -1,29 +1,46 @@
-// app/(tabs)/index.tsx
+// src/app/(tabs)/index.tsx
 
 import { useEffect, useState } from "react";
-import { useWindowDimensions } from "react-native";
+import { ActivityIndicator, Button, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import WeatherCard from "../../components/weathercard";
 import SearchBox from "../../components/searchbox";
-import RiwayatList from "../../components/riwayatlist";
+import WeatherCard from "../../components/weathercard";
+import { useDebounce } from "../../hooks/use-debounce";
+import { cariKota } from "../../services/geocodingService";
+import { HasilGeocoding } from "../../types/geocoding";
 
 export default function HalamanUtama() {
-  const [kotaAktif, setKotaAktif] = useState("Pekalongan");
-  const [riwayat, setRiwayat] = useState<string[]>(["Pekalongan"]);
+  const [teksCari, setTeksCari] = useState("");
+  const [hasil, setHasil] = useState<HasilGeocoding[]>([]);
+  const [sedangMemuat, setSedangMemuat] = useState(false);
+  const [pesanError, setPesanError] = useState<string | null>(null);
 
-  const { width } = useWindowDimensions();
-  const isTablet = width > 768;
+  const teksTertunda = useDebounce(teksCari, 500);
 
   useEffect(() => {
-    console.log("Kota aktif berubah menjadi:", kotaAktif);
-  }, [kotaAktif]);
+    if (teksTertunda.trim().length === 0) {
+      setHasil([]);
+      setPesanError(null);
+      return;
+    }
 
-  function handleCari(kota: string) {
-    setKotaAktif(kota);
+    ambilData(teksTertunda);
+  }, [teksTertunda]);
 
-    if (!riwayat.includes(kota)) {
-      setRiwayat([...riwayat, kota]);
+  async function ambilData(nama: string) {
+    setSedangMemuat(true);
+    setPesanError(null);
+
+    try {
+      const data = await cariKota(nama);
+      setHasil(data);
+    } catch (err) {
+      setPesanError(
+        "Gagal mengambil data. Periksa koneksi internet Anda."
+      );
+    } finally {
+      setSedangMemuat(false);
     }
   }
 
@@ -31,19 +48,39 @@ export default function HalamanUtama() {
     <SafeAreaView
       style={{
         flex: 1,
-        padding: isTablet ? 32 : 16,
+        padding: 16,
         gap: 16,
       }}
     >
-      <SearchBox onCari={handleCari} />
+      <SearchBox onCari={setTeksCari} />
 
-      <WeatherCard
-        kota={kotaAktif}
-        suhu={29}
-        tingkatAQI="BAIK"
-      />
+      {sedangMemuat && <ActivityIndicator />}
 
-      <RiwayatList daftarKota={riwayat} />
+      {pesanError && (
+        <View>
+          <Text>{pesanError}</Text>
+
+          <Button
+            title="Coba Lagi"
+            onPress={() => ambilData(teksTertunda)}
+          />
+        </View>
+      )}
+
+      {!sedangMemuat &&
+        !pesanError &&
+        teksTertunda.length > 0 &&
+        hasil.length === 0 && <Text>Kota tidak ditemukan</Text>}
+
+      {hasil.map((kota) => (
+        <WeatherCard
+          key={kota.id}
+          kota={kota.name}
+          suhu={29}
+          tingkatAQI="BAIK"
+        />
+      ))}
     </SafeAreaView>
   );
 }
+
