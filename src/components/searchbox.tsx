@@ -41,7 +41,7 @@ export default function SearchBox({ onCari }: SearchBoxProps) {
 
         <Button
           title="Cari"
-          onPress={() => onCari(teks)}
+          onPress={handleCari}
           accessibilityLabel="Cari cuaca untuk kota yang dimasukkan"
         />
       </View>

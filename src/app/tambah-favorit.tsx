@@ -12,6 +12,12 @@ export default function ModalTambahFavorit() {
         title="Simpan"
         onPress={() => router.back()}
       />
+
+      <Button
+        title="Batal"
+        accessibilityLabel="Tutup modal tambah favorit"
+        onPress={() => router.back()}
+      />
     </View>
   );
 }
