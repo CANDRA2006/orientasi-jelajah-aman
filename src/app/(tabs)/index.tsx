@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { View, Text, ActivityIndicator, Button, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
 
 import SearchBox from "../../components/searchbox";
 import WeatherCard from "../../components/weathercard";
@@ -51,6 +52,7 @@ export default function HalamanUtama() {
 
       setCuaca(dataCuaca);
       setKualitasUdara(dataAQI);
+      router.push("/(tabs)/riwayat");
     } catch (err) {
       if (idSaatIni !== requestIdRef.current) return;
       setPesanError("Gagal memuat data cuaca. Periksa koneksi internet Anda.");
@@ -82,12 +84,17 @@ export default function HalamanUtama() {
       )}
 
       {cuaca && kualitasUdara && kotaTerpilih && !sedangMemuat && (
-        <WeatherCard
-          kota={kotaTerpilih.name}
-          suhu={cuaca.saatIni.suhu}
-          tingkatAQI={konversiTingkatAQI(kualitasUdara.indeksAQI)}
-          indeksAQI={kualitasUdara.indeksAQI}
-        />
+        <>
+          <WeatherCard
+            kota={kotaTerpilih.name}
+            suhu={cuaca.saatIni.suhu}
+            tingkatAQI={konversiTingkatAQI(kualitasUdara.indeksAQI)}
+            indeksAQI={kualitasUdara.indeksAQI}
+          />
+          <Text style={{ fontSize: 14, color: "#555" }}>
+            Hari ini: Maks {cuaca.harian.suhuMaksimal[0]}°C · Min {cuaca.harian.suhuMinimal[0]}°C
+          </Text>
+        </>
       )}
 
       {cuaca && (
@@ -97,6 +104,11 @@ export default function HalamanUtama() {
         </Text>
       )}
 
+      {kualitasUdara && (
+        <Text style={{ fontSize: 11, color: "#888", textAlign: "center" }}>
+          PM2.5: {kualitasUdara.pm25} µg/m³ · PM10: {kualitasUdara.pm10} µg/m³
+        </Text>
+      )}
       <AtribusiCuaca />
     </SafeAreaView>
   );
