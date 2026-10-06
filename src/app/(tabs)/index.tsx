@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from "react";
 import { View, Text, ActivityIndicator, Button, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { router } from "expo-router";
 
 import SearchBox from "../../components/searchbox";
 import WeatherCard from "../../components/weathercard";
@@ -15,6 +14,7 @@ import { konversiTingkatAQI } from "../../services/weatherAdapter";
 import { labelKodeCuaca } from "../../constants/weatherCodes";
 import { HasilGeocoding } from "../../types/geocoding";
 import { DataCuacaLengkap, DataKualitasUdara } from "../../types/weather";
+import { simpanRiwayatKota } from "../../services/searchHistory";
 
 export default function HalamanUtama() {
   const [teksCari, setTeksCari] = useState("");
@@ -52,7 +52,7 @@ export default function HalamanUtama() {
 
       setCuaca(dataCuaca);
       setKualitasUdara(dataAQI);
-      router.push("/(tabs)/riwayat");
+      await simpanRiwayatKota(kota);
     } catch (err) {
       if (idSaatIni !== requestIdRef.current) return;
       setPesanError("Gagal memuat data cuaca. Periksa koneksi internet Anda.");
