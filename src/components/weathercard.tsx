@@ -1,4 +1,4 @@
-// src/components/WeatherCard.tsx
+﻿// src/components/WeatherCard.tsx
 import { View, Text } from "react-native";
 import type { WeatherCardProps, TingkatAQI } from "../types/cuaca";
 import { typeScale, spacing } from "../constants/styles";
@@ -15,6 +15,8 @@ export default function WeatherCard({
   suhu,
   tingkatAQI,
   indeksAQI,
+  kondisiCuaca,
+  kecepatanAngin,
 }: WeatherCardProps) {
   const teksAQI =
     indeksAQI !== undefined
@@ -23,8 +25,8 @@ export default function WeatherCard({
 
   const labelAksesibilitas =
     indeksAQI !== undefined
-      ? `Cuaca ${kota}, suhu ${suhu} derajat, indeks kualitas udara ${indeksAQI}, kategori ${tingkatAQI}`
-      : `Cuaca ${kota}, suhu ${suhu} derajat, kualitas udara ${tingkatAQI}`;
+      ? `Cuaca ${kota}, ${kondisiCuaca}, suhu ${suhu} derajat, indeks kualitas udara ${indeksAQI}, kategori ${tingkatAQI}, kecepatan angin ${kecepatanAngin} kilometer per jam`
+      : `Cuaca ${kota}, ${kondisiCuaca}, suhu ${suhu} derajat, kualitas udara ${tingkatAQI}, kecepatan angin ${kecepatanAngin} kilometer per jam`;
 
   return (
     <View
@@ -39,10 +41,15 @@ export default function WeatherCard({
       <Text style={{ fontWeight: "bold", fontSize: typeScale.judul }}>
         {kota}
       </Text>
+      <Text style={{ fontSize: typeScale.isi, marginTop: spacing.kecil }}>{kondisiCuaca}</Text>
       <Text style={{ fontSize: 32 }}>{suhu}°C</Text>
       <Text style={{ color: warnaPerTingkat[tingkatAQI], fontSize: typeScale.isi }}>
         {teksAQI}
       </Text>
+      <Text style={{ fontSize: typeScale.isi, marginTop: spacing.kecil }}>
+        Angin: {kecepatanAngin} km/j
+      </Text>
     </View>
   );
 }
+

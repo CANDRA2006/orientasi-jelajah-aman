@@ -6,6 +6,7 @@ import { router, useFocusEffect } from "expo-router";
 import AtribusiCuaca from "../../components/atribusiCuaca";
 import SearchBox from "../../components/searchbox";
 import WeatherCard from "../../components/weathercard";
+import { labelKodeCuaca } from "../../constants/weatherCodes";
 import { useDebounce } from "../../hooks/use-debounce";
 import { ambilKualitasUdara } from "../../services/airQualityServices";
 import { cariKota } from "../../services/geocodingService";
@@ -162,6 +163,9 @@ export default function HalamanUtama() {
             kota={kotaTerpilih.name}
             suhu={cuaca.saatIni.suhu}
             tingkatAQI={konversiTingkatAQI(kualitasUdara.indeksAQI)}
+            indeksAQI={kualitasUdara.indeksAQI}
+            kondisiCuaca={labelKodeCuaca(cuaca.saatIni.kodeCuaca)}
+            kecepatanAngin={cuaca.saatIni.kecepatanAngin}
           />
           {favoritSudahDimuat &&
             !daftarFavorit.some((favorit) => favorit.id === kotaTerpilih.id) && (
