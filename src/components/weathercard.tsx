@@ -1,5 +1,5 @@
 ﻿// src/components/WeatherCard.tsx
-import { View, Text } from "react-native";
+import { Text, View } from "react-native";
 import type { WeatherCardProps, TingkatAQI } from "../types/cuaca";
 import { typeScale, spacing } from "../constants/styles";
 
@@ -41,9 +41,13 @@ export default function WeatherCard({
       <Text style={{ fontWeight: "bold", fontSize: typeScale.judul }}>
         {kota}
       </Text>
-      <Text style={{ fontSize: typeScale.isi, marginTop: spacing.kecil }}>{kondisiCuaca}</Text>
+      <Text style={{ fontSize: typeScale.isi, marginTop: spacing.kecil }}>
+        {kondisiCuaca}
+      </Text>
       <Text style={{ fontSize: 32 }}>{suhu}°C</Text>
-      <Text style={{ color: warnaPerTingkat[tingkatAQI], fontSize: typeScale.isi }}>
+      <Text
+        style={{ color: warnaPerTingkat[tingkatAQI], fontSize: typeScale.isi }}
+      >
         {teksAQI}
       </Text>
       <Text style={{ fontSize: typeScale.isi, marginTop: spacing.kecil }}>

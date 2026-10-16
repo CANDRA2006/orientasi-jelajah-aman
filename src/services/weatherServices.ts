@@ -1,5 +1,5 @@
 // src/services/weatherService.ts
-import { DataCuacaLengkap } from "../types/weather";
+import type { DataCuacaLengkap } from "../types/weather";
 
 const BASE_URL = "https://api.open-meteo.com/v1/forecast";
 const BATAS_WAKTU_MS = 3000;

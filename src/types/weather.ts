@@ -1,5 +1,3 @@
-// src/types/weather.ts
-
 export interface CuacaSaatIni {
   suhu: number;
   kodeCuaca: number;

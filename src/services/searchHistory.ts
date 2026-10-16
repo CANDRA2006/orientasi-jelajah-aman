@@ -5,13 +5,14 @@ const HISTORY_KEY = "jelajah-aman:search-history";
 
 export async function bacaRiwayatKota(): Promise<HasilGeocoding[]> {
   try {
-    const raw = Platform.OS === "web"
-      ? globalThis.localStorage?.getItem(HISTORY_KEY)
-      : await readNativeValue();
+    const raw =
+      Platform.OS === "web"
+        ? globalThis.localStorage?.getItem(HISTORY_KEY)
+        : await readNativeValue();
     if (!raw) return [];
 
     const parsed: unknown = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed as HasilGeocoding[] : [];
+    return Array.isArray(parsed) ? (parsed as HasilGeocoding[]) : [];
   } catch {
     return [];
   }
@@ -19,7 +20,10 @@ export async function bacaRiwayatKota(): Promise<HasilGeocoding[]> {
 
 export async function simpanRiwayatKota(kota: HasilGeocoding): Promise<void> {
   const riwayat = await bacaRiwayatKota();
-  const diperbarui = [kota, ...riwayat.filter((item) => item.id !== kota.id)].slice(0, 20);
+  const diperbarui = [
+    kota,
+    ...riwayat.filter((item) => item.id !== kota.id),
+  ].slice(0, 20);
   const raw = JSON.stringify(diperbarui);
 
   try {

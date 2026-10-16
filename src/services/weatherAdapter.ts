@@ -1,5 +1,5 @@
 // src/services/weatherAdapter.ts
-import { TingkatAQI } from "../types/cuaca";
+import type { TingkatAQI } from "../types/cuaca";
 
 export function konversiTingkatAQI(indeksEropa: number): TingkatAQI {
   if (indeksEropa <= 20) return "BAIK";

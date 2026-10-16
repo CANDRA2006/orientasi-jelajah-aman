@@ -1,6 +1,14 @@
 // src/app/(tabs)/riwayat.tsx
-import { useState, useCallback } from "react";
-import { Alert, View, Text, Button, FlatList, Platform, StyleSheet } from "react-native";
+import { useCallback, useState } from "react";
+import {
+  Alert,
+  Button,
+  FlatList,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { useFocusEffect } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ambilSemuaFavorit, hapusFavorit } from "../../services/favoritStorage";
@@ -60,7 +68,7 @@ export default function TabRiwayat() {
     <SafeAreaView style={styles.container}>
       <Text style={styles.headerTitle}>Kota Favorit</Text>
       <Text style={styles.jumlahFavorit}>Tersimpan {daftarFavorit.length} kota</Text>
-      
+
       <FlatList
         data={daftarFavorit}
         keyExtractor={(item) => item.id.toString()}

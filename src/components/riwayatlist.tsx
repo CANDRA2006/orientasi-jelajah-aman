@@ -17,7 +17,10 @@ export default function RiwayatList({ daftarKota }: RiwayatListProps) {
             params: { kota: kota.name },
           }}
         >
-          <Text>{kota.name}{kota.admin1 ? `, ${kota.admin1}` : ""}</Text>
+          <Text>
+            {kota.name}
+            {kota.admin1 ? `, ${kota.admin1}` : ""}
+          </Text>
         </Link>
       ))}
       {daftarKota.length === 0 && <Text>Belum ada kota di riwayat pencarian.</Text>}
