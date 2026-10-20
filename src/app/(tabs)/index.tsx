@@ -21,10 +21,13 @@ import { BATAS_CACHE_MS, ambilCuacaOfflineFirst } from "../../services/cuacaRepo
 import { cariKota } from "../../services/geocodingService";
 import { ambilKoordinatSaatIni, mintaIzinLokasi } from "../../services/locationServices";
 import { ambilSemuaFavorit } from "../../services/favoritStorage";
+import { bacaRiwayatKota, simpanRiwayatKota } from "../../services/searchHistory";
 import { konversiTingkatAQI } from "../../services/weatherAdapter";
 import type { KotaFavorit } from "../../types/favorit";
 import type { HasilGeocoding } from "../../types/geocoding";
 import type { HasilCuacaOffline, RingkasanKotaTersimpan } from "../../types/cache";
+import { useAppTheme } from "../../contexts/theme-context";
+import { useLocalSearchParams } from "expo-router";
 
 export default function HalamanUtama() {
   const [teksCari, setTeksCari] = useState("");
@@ -39,6 +42,16 @@ export default function HalamanUtama() {
   const [pesanLokasi, setPesanLokasi] = useState<string | null>(null);
   const teksTertunda = useDebounce(teksCari, 500);
   const requestIdRef = useRef(0);
+  const { colors } = useAppTheme();
+  const params = useLocalSearchParams<{ cityId?: string; cityName?: string; lat?: string; lon?: string }>();
+
+  useEffect(() => {
+    if (!params.cityName || !params.lat || !params.lon || !params.cityId) return;
+    const kota: HasilGeocoding = { id: Number(params.cityId), name: params.cityName, country: "", latitude: Number(params.lat), longitude: Number(params.lon) };
+    setTeksCari(kota.name);
+    void pilihKota(kota);
+    router.setParams({ cityId: undefined, cityName: undefined, lat: undefined, lon: undefined });
+  }, [params.cityId, params.cityName, params.lat, params.lon]);
 
   useFocusEffect(
     useCallback(() => {
@@ -121,6 +134,7 @@ export default function HalamanUtama() {
       if (idPermintaan !== requestIdRef.current) return;
 
       setHasil(data);
+      void simpanRiwayatKota(kota);
       void daftarKotaTersimpan()
         .then(setKotaTersimpan)
         .catch(() => {});
@@ -177,7 +191,7 @@ export default function HalamanUtama() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
       <ScrollView
         contentContainerStyle={{ padding: 16, gap: 16 }}
         keyboardShouldPersistTaps="handled"
@@ -188,7 +202,7 @@ export default function HalamanUtama() {
 
         {hasilPencarian.map((kota) => (
           <TouchableOpacity key={kota.id} onPress={() => void pilihKota(kota)}>
-            <Text>{kota.name}</Text>
+            <Text style={{ color: colors.text }}>{kota.name}</Text>
           </TouchableOpacity>
         ))}
 
@@ -199,7 +213,7 @@ export default function HalamanUtama() {
             </Text>
             {kotaTersimpan.map((kota) => (
               <TouchableOpacity key={kota.kunci} onPress={() => pilihKotaTersimpan(kota)}>
-                <Text>{kota.nama}</Text>
+                <Text style={{ color: colors.text }}>{kota.nama}</Text>
               </TouchableOpacity>
             ))}
           </View>
