@@ -43,4 +43,3 @@ Untuk menghasilkan versi statis yang dapat dipasang di hosting, jalankan:
 npm run build:web
 ```
 
-Hasil build berada di folder `dist`. Saat dipasang, server hosting harus mengirim header `Cross-Origin-Embedder-Policy: credentialless` dan `Cross-Origin-Opener-Policy: same-origin` agar cache cuaca berbasis SQLite dapat digunakan. Geolokasi browser memerlukan izin pengguna dan halaman HTTPS (atau localhost).
