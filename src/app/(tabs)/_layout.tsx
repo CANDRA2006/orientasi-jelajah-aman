@@ -10,22 +10,22 @@ export default function TabLayout() {
     <Tabs screenOptions={{ headerShown: true, tabBarActiveTintColor: "#168a83", tabBarInactiveTintColor: colors.textSecondary, tabBarStyle: { backgroundColor: colors.background, borderTopColor: colors.backgroundSelected }, headerStyle: { backgroundColor: colors.background }, headerTintColor: colors.text }}>
       <Tabs.Screen
         name="index"
-        options={{ title: "Beranda", tabBarIcon: ({ color, size }) => <Ionicons name="home" color={color} size={size} /> }}
+        options={{ title: "Beranda", tabBarIcon: ({ color, size }) => <Ionicons name="home" color={typeof color === "string" ? color : colors.textSecondary} size={size} /> }}
       />
 
       <Tabs.Screen
         name="riwayat"
-        options={{ title: "Favorit & Riwayat", tabBarIcon: ({ color, size }) => <Ionicons name="time" color={color} size={size} /> }}
+        options={{ title: "Favorit & Riwayat", tabBarIcon: ({ color, size }) => <Ionicons name="time" color={typeof color === "string" ? color : colors.textSecondary} size={size} /> }}
       />
 
       <Tabs.Screen
         name="pengaturan"
-        options={{ title: "Pengaturan", tabBarIcon: ({ color, size }) => <Ionicons name="settings-sharp" color={color} size={size} /> }}
+        options={{ title: "Pengaturan", tabBarIcon: ({ color, size }) => <Ionicons name="settings-sharp" color={typeof color === "string" ? color : colors.textSecondary} size={size} /> }}
       />
 
       <Tabs.Screen
         name="tentang"
-        options={{ title: "Tentang", tabBarIcon: ({ color, size }) => <Ionicons name="information-circle" color={color} size={size} /> }}
+        options={{ title: "Tentang", tabBarIcon: ({ color, size }) => <Ionicons name="information-circle" color={typeof color === "string" ? color : colors.textSecondary} size={size} /> }}
       />
     </Tabs>
   );
