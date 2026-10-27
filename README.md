@@ -28,3 +28,19 @@ npx expo start
 ```
 
 Ikuti petunjuk di terminal untuk membuka aplikasi di Expo Go, emulator Android, simulator iOS, atau web.
+
+## Menjalankan di browser
+
+Jalankan server pengembangan web:
+
+```bash
+npm run web
+```
+
+Untuk menghasilkan versi statis yang dapat dipasang di hosting, jalankan:
+
+```bash
+npm run build:web
+```
+
+Hasil build berada di folder `dist`. Saat dipasang, server hosting harus mengirim header `Cross-Origin-Embedder-Policy: credentialless` dan `Cross-Origin-Opener-Policy: same-origin` agar cache cuaca berbasis SQLite dapat digunakan. Geolokasi browser memerlukan izin pengguna dan halaman HTTPS (atau localhost).
